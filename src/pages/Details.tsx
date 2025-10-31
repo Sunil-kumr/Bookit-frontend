@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-// @ts-ignore
+
 import { experiences } from '../assets/experiences';
 
 export default function Details() {

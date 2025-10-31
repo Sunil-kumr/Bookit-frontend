@@ -10,6 +10,7 @@ const Checkout: React.FC = () => {
   useEffect(() => {
     if (!booking) navigate("/");
   }, [booking, navigate]);
+
   if (!booking) return null;
 
   const [fullName, setFullName] = useState("");
@@ -20,7 +21,7 @@ const Checkout: React.FC = () => {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Apply promo code
+  // ✅ Apply promo code
   const handleApplyPromo = async () => {
     try {
       const response = await fetch(
@@ -38,7 +39,7 @@ const Checkout: React.FC = () => {
     }
   };
 
-  // Submit booking form
+  // ✅ Handle form submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!fullName || !email || !agree) {
@@ -56,7 +57,7 @@ const Checkout: React.FC = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            experienceId: booking.experience.id, // <--- use .id instead of _id
+            experienceId: booking.experience.id,
             date: booking.date,
             time: booking.time,
             qty: booking.qty,
@@ -68,6 +69,7 @@ const Checkout: React.FC = () => {
       );
 
       const bk = response.ok ? await response.json() : null;
+
       navigate("/result", {
         state: {
           success: !!bk,
@@ -104,20 +106,23 @@ const Checkout: React.FC = () => {
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-10 flex flex-col md:flex-row gap-10 items-start">
+      {/* LEFT FORM */}
       <section className="flex-1 max-w-2xl">
         <div className="mb-3 flex items-center gap-3">
           <span className="font-medium text-gray-800 text-lg">&larr; Checkout</span>
         </div>
 
-        {/* ✅ Attach handleSubmit to the form, not button */}
         <form
+          id="checkout-form"
           onSubmit={handleSubmit}
           className="bg-gray-100 rounded-lg p-6 space-y-6 shadow-sm flex flex-col"
           style={{ minWidth: 420, width: "100%" }}
         >
           <div className="flex gap-3">
             <div className="flex-1 flex flex-col">
-              <label className="block text-xs text-gray-700 mb-1">Full name</label>
+              <label className="block text-xs text-gray-700 mb-1">
+                Full name
+              </label>
               <input
                 type="text"
                 className="border px-3 py-2 rounded w-full text-sm outline-none bg-white"
@@ -149,7 +154,6 @@ const Checkout: React.FC = () => {
             <button
               type="button"
               className="px-7 py-2 bg-black text-white text-sm rounded hover:bg-gray-900"
-              style={{ height: "40px", minWidth: 72 }}
               onClick={handleApplyPromo}
             >
               Apply
@@ -172,18 +176,10 @@ const Checkout: React.FC = () => {
           {submitError && (
             <div className="text-xs text-red-600 mt-2">{submitError}</div>
           )}
-
-          {/* ✅ Submit button is inside the form */}
-          <button
-            type="submit"
-            className="w-full font-bold py-3 rounded transition bg-yellow-400 text-black hover:bg-yellow-500"
-            disabled={submitting}
-          >
-            {submitting ? "Processing..." : "Pay and Confirm"}
-          </button>
         </form>
       </section>
 
+      {/* RIGHT SUMMARY CARD */}
       <aside className="w-full md:w-[320px] bg-white rounded-xl p-6 border shadow space-y-3 h-fit mt-8 md:mt-0">
         <div className="text-sm font-medium flex justify-between">
           <span>Experience</span>
@@ -209,17 +205,29 @@ const Checkout: React.FC = () => {
           <span>Taxes</span>
           <span>₹{booking.taxes}</span>
         </div>
+
         {!!discount && (
           <div className="flex justify-between text-sm text-green-700 font-bold">
             <span>Discount</span>
             <span>- ₹{discount}</span>
           </div>
         )}
+
         <hr />
-        <div className="flex justify-between font-bold text-lg">
+        <div className="flex justify-between font-bold text-lg mb-4">
           <span>Total</span>
           <span>₹{finalTotal}</span>
         </div>
+
+        {/* ✅ Button correctly after Total */}
+        <button
+          type="submit"
+          form="checkout-form"
+          className="w-full font-bold py-3 rounded-xl transition bg-yellow-400 text-black hover:bg-yellow-500"
+          disabled={submitting}
+        >
+          {submitting ? "Processing..." : "Pay and Confirm"}
+        </button>
       </aside>
     </main>
   );

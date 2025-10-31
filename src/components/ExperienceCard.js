@@ -1,5 +1,0 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Link } from 'react-router-dom';
-export default function ExperienceCard({ exp }) {
-    return (_jsxs("div", { className: "bg-white rounded-lg shadow p-4 border border-gray-200 min-w-[300px] max-w-[344px] flex flex-col", children: [_jsx("img", { src: exp.image, alt: exp.title, className: "rounded w-full h-40 object-cover" }), _jsx("div", { className: "font-semibold mt-2 text-lg", children: exp.title }), _jsxs("div", { className: "flex items-center mt-1 gap-2", children: [_jsx("span", { className: "text-xs bg-gray-100 rounded px-2 py-1", children: exp.tag }), exp.location && _jsx("span", { className: "text-xs", children: exp.location })] }), _jsx("div", { className: "text-xs text-gray-600 mt-2", children: exp.description }), _jsxs("div", { className: "flex items-center justify-between mt-4", children: [_jsxs("div", { className: "text-lg font-bold text-gray-800", children: ["From \u20B9", exp.price] }), _jsx(Link, { to: `/details/${exp.id}`, className: "bg-yellow-400 text-sm font-semibold px-4 py-2 rounded hover:bg-yellow-500 focus:outline-none", children: "View Details" })] })] }));
-}

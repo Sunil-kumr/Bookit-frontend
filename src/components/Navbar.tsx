@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 
 type NavbarProps = {
   search: string;
@@ -6,33 +8,62 @@ type NavbarProps = {
 };
 
 const Navbar: React.FC<NavbarProps> = ({ search, setSearch }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <div className="flex bg-red-100 justify-between items-center mb-8 px-20 py-3">
-      <div className="flex items-center">
-        <Link to="/">
+    <nav className="bg-green-100 shadow-md">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
           <img
-            src="/images/highway.jpg"
+            src="/images/delite.webp"
             alt="HD highway delite"
-            className="h-16 w-auto mr-6"
+            className="h-14 w-auto"
           />
         </Link>
-      </div>
-      <div className="flex gap-2 items-center">
-        <input
-          type="search"
-          placeholder="Search experiences"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border border-gray-300 rounded px-4 py-2 w-64 text-sm"
-        />
+
+        {/* Desktop Search */}
+        <div className="hidden md:flex gap-2 items-center">
+          <input
+            type="search"
+            placeholder="Search experiences"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border border-gray-300 rounded px-4 py-2 w-64 text-sm"
+          />
+          <button className="bg-yellow-400 rounded px-5 py-2 font-semibold text-white">
+            Search
+          </button>
+        </div>
+
+        {/* Mobile Menu Icon */}
         <button
-          className="bg-yellow-400 rounded px-5 py-2 font-semibold text-white"
-          onClick={() => {}}
+          className="md:hidden text-gray-700"
+          onClick={() => setMenuOpen(!menuOpen)}
         >
-          Search
+          {menuOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
-    </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden px-4 pb-3">
+          <input
+            type="search"
+            placeholder="Search experiences"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border border-gray-300 rounded px-4 py-2 w-full mb-2 text-sm"
+          />
+          <button
+            className="bg-yellow-400 w-full rounded px-5 py-2 font-semibold text-white"
+            onClick={() => setMenuOpen(false)}
+          >
+            Search
+          </button>
+        </div>
+      )}
+    </nav>
   );
 };
 
